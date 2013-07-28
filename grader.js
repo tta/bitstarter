@@ -99,7 +99,7 @@ if(require.main == module) {
     if (program.url) {
 //        var responsefn = buildfn(DOWNLOADFILE);
 //        rest.get(program.url.toString()).on('complete',responsefn);
-        rest.get('http://google.com').on('complete', function(result) {
+        rest.get(program.url.toString()).on('complete', function(result) {
             if (result instanceof Error) {
                 console.log("result instanceof error");
                 console.error('Error: ' + util.format(result.message));
@@ -108,14 +108,17 @@ if(require.main == module) {
                 console.log("Write to temp.html");
                 fs.writeFileSync(DOWNLOADFILE, result); //might need to check for existence of temp.html here
                 var checkJson = checkHtmlFile(DOWNLOADFILE, program.checks);
+                var outJson = JSON.stringify(checkJson, null, 4);
+                console.log(outJson);
+//                fs.unlink(DOWNLOADFILE);
             }
         });
     } else {
         filename = program.file;
         var checkJson = checkHtmlFile(filename, program.checks);
+        var outJson = JSON.stringify(checkJson, null, 4);
+        console.log(outJson);
     }
-    var outJson = JSON.stringify(checkJson, null, 4);
-    console.log(outJson);
 } else {
     exports.checkHtmlFile = checkHtmlFile;
 }
